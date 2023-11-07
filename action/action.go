@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/marsofsnow/goctl-swagger/generate"
+	"github.com/dyntrait/goctl-swagger/generate"
 	"github.com/urfave/cli/v2"
 	plugin2 "github.com/zeromicro/go-zero/tools/goctl/plugin"
 )

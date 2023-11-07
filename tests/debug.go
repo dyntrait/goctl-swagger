@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/marsofsnow/goctl-swagger/generate"
+	"github.com/dyntrait/goctl-swagger/generate"
 	"github.com/zeromicro/go-zero/tools/goctl/api/parser"
 	plugin2 "github.com/zeromicro/go-zero/tools/goctl/plugin"
 )

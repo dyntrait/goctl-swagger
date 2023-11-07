@@ -27,6 +27,7 @@ const (
 	exampleOption   = "example"
 	optionSeparator = "|"
 	equalToken      = "="
+	//atRespDoc       = "@respdoc-"
 )
 
 var excludePaths = []string{"/swagger", "/swagger-json"}
@@ -206,7 +207,7 @@ func renderServiceRoutes(service spec.Service, groups []spec.Group, paths swagge
 				//处理非get请求
 				if strings.ToUpper(route.Method) != http.MethodGet {
 
-					//post轻轻也可能出现head
+					//post请求也可能出现head
 
 					//UploadRequest
 					//Auth Where
@@ -400,7 +401,13 @@ func renderReplyAsDefinition(d swaggerDefinitionsObject, m messageMap, p []spec.
 		for _, member := range defineStruct.Members {
 
 			//header path form 不在作为json字段显示
-			if hasExcluParameters(member) {
+			/*
+				if hasExcluParameters(member) {
+					continue
+				}
+
+			*/
+			if strings.Contains(member.Tag, "path") {
 				continue
 			}
 			kv := keyVal{Value: schemaOfField(member)}

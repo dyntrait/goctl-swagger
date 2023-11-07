@@ -3,9 +3,9 @@
 ## 1. 编译goctl-swagger插件
 
 ```
-GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go install  github.com/dyntrait/goctl-swagger@latest
+GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go install  github.com/dyntrait/goctl-swagger@v1.2.0
 
-goctl-swagger -V  //注意是大写的V,因为第三方cli升级导致-v不可用
+goctl-swagger -V  
 ```
 ### 使用须知
 

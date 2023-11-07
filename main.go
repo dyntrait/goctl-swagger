@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/dyntrait/goctl-swagger/action"
 	"github.com/urfave/cli/v2"
 )
 
 var (
-	version  = "20230630"
+	version  = time.Now().Format(time.RFC3339)
 	commands = []*cli.Command{
 		{
 			Name:   "swagger",

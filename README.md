@@ -9,10 +9,42 @@ goctl-swagger -V  //注意是大写的V,因为第三方cli升级导致-v不可�
 ```
 ### 使用须知
 
-* 支持go-zero及goctl版本1.4.2及以后
+* 支持go-zero及goctl版本1.6.0及以后
 * support import nested api,比如在a.api定义了类型.然后在b.api导入a.api就可以使用a.api的类型.
 * 支持在group设置的路径前缀prefix
 * 支持tag:header,path,form,json.建议gozero的tag放在最前面.其他验证库的tag放在最后面
+
+### 举例
+```api
+type IndexRequset {
+	TestPath   string `path:"testPath"`
+	TestForm   string `form:"testForm"`
+	TestHeader string `header:"testHeader"`
+	TestJson   string `json:"testJson"`
+}
+
+type IndexResponse {
+	Info interface{} `json:"info"`
+}
+
+service api-api {
+	@doc "测试页"
+	@handler test
+	post /:testPath(IndexRequset) returns (IndexResponse)
+}
+```
+在swagger里将生成如下请求
+```
+curl -X 'POST' \
+  'http://127.0.0.1:18888/path1?testForm=q1' \
+  -H 'accept: application/json' \
+  -H 'testHeader: h1' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "testJson": "nick"
+}'
+
+```
 
 ## 2. 配置环境
 将$GOPATH/bin中的goctl-swagger添加到环境变量
@@ -91,7 +123,7 @@ goctl-swagger -V  //注意是大写的V,因为第三方cli升级导致-v不可�
     ```
 * 指定Host，basePath [api-host-and-base-path](https://swagger.io/docs/specification/2-0/api-host-and-base-path/)
     ```shell script
-    $ goctl api plugin -plugin goctl-swagger="swagger -filename user.json -host 127.0.0.2 -basepath /api" -api user.api -dir .
+    $ goctl api plugin -plugin goctl-swagger="swagger -filename user.json -host 127.0.0.2 -basepath /" -api user.api -dir .
     ```
 * swagger ui 查看生成的文档
     ```shell script

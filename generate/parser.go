@@ -328,10 +328,11 @@ func renderStruct(member spec.Member) swaggerParameterObject {
 	sp := swaggerParameterObject{In: "query", Type: ftype, Format: format}
 	sp.Schema = new(swaggerSchemaObject)
 
-	for i, tag := range member.Tags() {
+	for _, tag := range member.Tags() {
 		sp.Name = tag.Name //字段名字.
-		if i == 0 {
-			sp.In = tag.Key //gozero的tag一定要在最前面
+		// form 字段 作为query参数.此处重要.
+		if strings.Contains(tag.Key, "header") {
+			sp.In = tag.Key
 		}
 
 		if len(tag.Options) == 0 {
@@ -400,16 +401,12 @@ func renderReplyAsDefinition(d swaggerDefinitionsObject, m messageMap, p []spec.
 
 		for _, member := range defineStruct.Members {
 
-			//header path form 不在作为json字段显示
-			/*
-				if hasExcluParameters(member) {
-					continue
-				}
+			//header path form 不在出现在http body里面
 
-			*/
-			if strings.Contains(member.Tag, "path") {
+			if hasExcluParameters(member) {
 				continue
 			}
+
 			kv := keyVal{Value: schemaOfField(member)}
 			kv.Key = member.Name
 			if tag, err := member.GetPropertyName(); err == nil {

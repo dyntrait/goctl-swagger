@@ -1,0 +1,127 @@
+syntax = "v1"
+
+info (
+	title:   "package manage server"
+	desc:    "package upload && download server"
+	author:  "dyntrait"
+	email:   "dyntrait@outlook.com"
+	version: "v1"
+)
+
+type LastPackageInfoParams {
+	PackageType string `path:"packageType"` //app_type：android
+	PackageName string `path:"packageName"` //app_name：adxmessage
+}
+
+type PackageInfo {
+	AppType        string `json:"app_type"` //app_type
+	AppName        string `json:"app_name"` // appname
+	AppVersion     string `json:"app_version"` // appversion
+	AppVersionCode int64  `json:"app_version_code"` // appversion
+	//UploadPasswd string    `json:"upload_passwd"` // passwd
+	AppStatus     int64 `json:"app_status"` // 1:on 2:off
+	AppMustUpdate int64 `json:"app_must_update"` // 1. must update 2.not must update
+	//Uploader     string    `json:"uploader"`      // people upload this app
+	//CreateTime   time.Time `json:"create_time"`
+	AppIpfsHash string `json:"app_ipfs_hash"` // hash
+	//AppTip       string    `json:"app_tip"`       // tip
+	AppTipZh   string `json:"app_tip_zh"` // app update info by chinese
+	AppTipEn   string `json:"app_tip_en"` //app update info by chinese
+	StaticSite string `json:"static_site"` // app download static site
+}
+
+type GetVersionPackageInfoParams {
+	PackageType    string `path:"packageType"` // app_type:android
+	PackageName    string `path:"packageName"` //app_name:adxmessage
+	PackageVersion string `path:"packageVersion"` //app_version:v1.1.1
+}
+
+type UpLoadFileParams {
+	AppType        string `form:"appType"` //app_type  android or apple
+	AppName        string `form:"appName"` //app_name
+	AppVersion     string `form:"appVersion"` //app_version
+	AppVersionCode int    `form:"appVersionCode"`
+	AppStatus      int    `form:"appStatus,range=[0:1]"`
+	AppMustUpdate  int    `form:"appMustUpdate,range=[0:1]"`
+	UploadPasswd   string `form:"uploadPasswd,optional"`
+	ZhUpdateTip    string `form:"updateContentZH"`
+	EnUpdateTip    string `form:"updateContentEN"`
+}
+
+type UploadFileResp {
+	Passwd string `json:"passwd"` //只有第一次会生成密码，其他时间为空，密码已经用base64进行编码
+}
+
+type IndexResp {
+	Content string `json:"content"`
+}
+
+type FileUploadResp {
+	Address string `json:"address,optional"`
+	Hash    string `json:"hash"`
+}
+
+type IOSPackageUpParams {
+	AppType string `form:"appType"` // 类型是IOS
+	//AppName string `form:"appName"` //数据库写死是ios-siganal
+	CorporateSignatureVersion string `form:"corporateSignatureVersion"` //企业签名版本号
+	AppStoreVersion           string `form:"appStoreVersion"` //appstore版本号
+	TestFlightVersion         string `form:"testFlightVersion"` //testFlightVersion版本号
+	AppMustUpdate             int    `form:"appMustUpdate,range=[0:1]"`
+	UploadPasswd              string `form:"uploadPasswd,optional"`
+	ZhUpdateTip               string `form:"updateContentZH"`
+	EnUpdateTip               string `form:"updateContentEN"`
+	PackageHash               string `form:"packageHash"`
+}
+
+type IOSPackageUpUpResp {
+	Result string `json:"result"`
+}
+
+type IOSPackageInfo {
+	AppType string `json:"appType"` // 类型是IOS
+	//AppName string `json:"appName"` //数据库写死是ios-siganal
+	CorporateSignatureVersion string `json:"corporateSignatureVersion"` //企业签名版本号
+	AppStoreVersion           string `json:"appStoreVersion"` //appstore版本号
+	TestFlightVersion         string `json:"testFlightVersion"` //testFlightVersion版本号
+	AppMustUpdate             int    `json:"appMustUpdate,range=[0:1]"`
+	//UploadPasswd string `json:"uploadPasswd,optional"`
+	ZhUpdateTip string `json:"updateContentZH"`
+	EnUpdateTip string `json:"updateContentEN"`
+	Hash        string `json:"hash"`
+}
+
+service packageserver-api {
+	@doc "index"
+	@handler IndexHandler
+	get /index returns (IndexResp)
+
+	@doc "ios 预上传"
+	@handler FileUploadHandler
+	post /api/v1/package/fileupload returns (FileUploadResp)
+
+	@doc "ios包上传"
+	@handler IOSPackageUploadHandler
+	post /api/v1/package/iosUpload (IOSPackageUpParams) returns (IOSPackageUpUpResp)
+
+	@doc "ios查询最新的包信息"
+	@handler LastIOSPackageInfoHandler
+	get /api/v1/package/lastIOSPackage returns (IOSPackageInfo)
+
+	@doc "根据类型和名字查询最新的包信息"
+	@handler LastPackageInfoHandler
+	get /api/v1/package/:packageType/:packageName (LastPackageInfoParams) returns (PackageInfo)
+
+	@doc "根据类型和名字，版本号查询该包信息"
+	@handler SpecifyPackageInfoHandler
+	get /api/v1/package/:packageType/:packageName/:packageVersion (GetVersionPackageInfoParams) returns (PackageInfo)
+
+	@doc "上传包"
+	@handler UploadFileHandler
+	post /v1/package/upload (UpLoadFileParams) returns (UploadFileResp)
+
+	@doc "下载包"
+	@handler DownloadFileHandler
+	get /v1/package/download
+}
+

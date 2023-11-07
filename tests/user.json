@@ -1,0 +1,542 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "package manage server",
+    "description": "package upload \u0026\u0026 download server",
+    "version": "v1"
+  },
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/package/fileupload": {
+      "post": {
+        "summary": "ios 预上传",
+        "operationId": "FileUploadHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FileUploadResp"
+            }
+          }
+        },
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/api/v1/package/iosUpload": {
+      "post": {
+        "summary": "ios包上传",
+        "operationId": "IOSPackageUploadHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IOSPackageUpUpResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appType",
+            "description": " 类型是IOS",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "corporateSignatureVersion",
+            "description": "企业签名版本号",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "appStoreVersion",
+            "description": "appstore版本号",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "testFlightVersion",
+            "description": "testFlightVersion版本号",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "appMustUpdate",
+            "in": "form",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "schema": {
+              "maximum": 1
+            }
+          },
+          {
+            "name": "uploadPasswd",
+            "in": "form",
+            "required": false,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "updateContentZH",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "updateContentEN",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "packageHash",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IOSPackageUpParams"
+            }
+          }
+        ],
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/api/v1/package/lastIOSPackage": {
+      "get": {
+        "summary": "ios查询最新的包信息",
+        "operationId": "LastIOSPackageInfoHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IOSPackageInfo"
+            }
+          }
+        },
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/api/v1/package/{packageType}/{packageName}": {
+      "get": {
+        "summary": "根据类型和名字查询最新的包信息",
+        "operationId": "LastPackageInfoHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PackageInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "packageType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "packageName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/api/v1/package/{packageType}/{packageName}/{packageVersion}": {
+      "get": {
+        "summary": "根据类型和名字，版本号查询该包信息",
+        "operationId": "SpecifyPackageInfoHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PackageInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "packageType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "packageName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "packageVersion",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/index": {
+      "get": {
+        "summary": "index",
+        "operationId": "IndexHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IndexResp"
+            }
+          }
+        },
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/v1/package/download": {
+      "get": {
+        "summary": "下载包",
+        "operationId": "DownloadFileHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    },
+    "/v1/package/upload": {
+      "post": {
+        "summary": "上传包",
+        "operationId": "UploadFileHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UploadFileResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appType",
+            "description": "app_type  android or apple",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "appName",
+            "description": "app_name",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "appVersion",
+            "description": "app_version",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "appVersionCode",
+            "in": "form",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "schema": {}
+          },
+          {
+            "name": "appStatus",
+            "in": "form",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "schema": {
+              "maximum": 1
+            }
+          },
+          {
+            "name": "appMustUpdate",
+            "in": "form",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "schema": {
+              "maximum": 1
+            }
+          },
+          {
+            "name": "uploadPasswd",
+            "in": "form",
+            "required": false,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "updateContentZH",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "updateContentEN",
+            "in": "form",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpLoadFileParams"
+            }
+          }
+        ],
+        "tags": [
+          "packageserver-api"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FileUploadResp": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        }
+      },
+      "title": "FileUploadResp",
+      "required": [
+        "hash"
+      ]
+    },
+    "GetVersionPackageInfoParams": {
+      "type": "object",
+      "title": "GetVersionPackageInfoParams"
+    },
+    "IOSPackageInfo": {
+      "type": "object",
+      "properties": {
+        "appType": {
+          "type": "string",
+          "description": " 类型是IOS"
+        },
+        "corporateSignatureVersion": {
+          "type": "string",
+          "description": "企业签名版本号"
+        },
+        "appStoreVersion": {
+          "type": "string",
+          "description": "appstore版本号"
+        },
+        "testFlightVersion": {
+          "type": "string",
+          "description": "testFlightVersion版本号"
+        },
+        "appMustUpdate": {
+          "type": "integer",
+          "format": "int32",
+          "maximum": 1
+        },
+        "updateContentZH": {
+          "type": "string"
+        },
+        "updateContentEN": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        }
+      },
+      "title": "IOSPackageInfo",
+      "required": [
+        "appType",
+        "corporateSignatureVersion",
+        "appStoreVersion",
+        "testFlightVersion",
+        "appMustUpdate",
+        "updateContentZH",
+        "updateContentEN",
+        "hash"
+      ]
+    },
+    "IOSPackageUpParams": {
+      "type": "object",
+      "title": "IOSPackageUpParams"
+    },
+    "IOSPackageUpUpResp": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      },
+      "title": "IOSPackageUpUpResp",
+      "required": [
+        "result"
+      ]
+    },
+    "IndexResp": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        }
+      },
+      "title": "IndexResp",
+      "required": [
+        "content"
+      ]
+    },
+    "LastPackageInfoParams": {
+      "type": "object",
+      "title": "LastPackageInfoParams"
+    },
+    "PackageInfo": {
+      "type": "object",
+      "properties": {
+        "app_type": {
+          "type": "string",
+          "description": "app_type"
+        },
+        "app_name": {
+          "type": "string",
+          "description": " appname"
+        },
+        "app_version": {
+          "type": "string",
+          "description": " appversion"
+        },
+        "app_version_code": {
+          "type": "integer",
+          "format": "int64",
+          "description": " appversion"
+        },
+        "app_status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 1:on 2:off"
+        },
+        "app_must_update": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 1. must update 2.not must update"
+        },
+        "app_ipfs_hash": {
+          "type": "string",
+          "description": " hash"
+        },
+        "app_tip_zh": {
+          "type": "string",
+          "description": " app update info by chinese"
+        },
+        "app_tip_en": {
+          "type": "string",
+          "description": "app update info by chinese"
+        },
+        "static_site": {
+          "type": "string",
+          "description": " app download static site"
+        }
+      },
+      "title": "PackageInfo",
+      "required": [
+        "app_type",
+        "app_name",
+        "app_version",
+        "app_version_code",
+        "app_status",
+        "app_must_update",
+        "app_ipfs_hash",
+        "app_tip_zh",
+        "app_tip_en",
+        "static_site"
+      ]
+    },
+    "UpLoadFileParams": {
+      "type": "object",
+      "title": "UpLoadFileParams"
+    },
+    "UploadFileResp": {
+      "type": "object",
+      "properties": {
+        "passwd": {
+          "type": "string",
+          "description": "只有第一次会生成密码，其他时间为空，密码已经用base64进行编码"
+        }
+      },
+      "title": "UploadFileResp",
+      "required": [
+        "passwd"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

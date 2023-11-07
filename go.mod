@@ -1,4 +1,4 @@
-module github.com/marsofsnow/goctl-swagger
+module github.com/dyntrait/goctl-swagger
 
 go 1.17
 
@@ -6,6 +6,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/urfave/cli/v2 v2.23.0
 	github.com/zeromicro/go-zero/tools/goctl v1.4.2
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
 
 require (
@@ -25,6 +26,5 @@ require (
 	github.com/zeromicro/go-zero v1.4.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
